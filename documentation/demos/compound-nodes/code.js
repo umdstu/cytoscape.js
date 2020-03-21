@@ -17,6 +17,10 @@ var cy = window.cy = cytoscape({
       css: {
         'text-valign': 'top',
         'text-halign': 'center',
+        'min-width': '200px',
+        'min-height': '100px',
+        'max-width': '400px',
+        'max-height': '200px'
       }
     },
     {

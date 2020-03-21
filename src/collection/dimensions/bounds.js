@@ -75,6 +75,19 @@ elesfn.updateCompoundBounds = function(force = false){
       }
     };
 
+    let max = {
+      width: {
+        val: parent.pstyle('max-width').pfValue,
+        left: parent.pstyle('max-width-bias-left'),
+        right: parent.pstyle('max-width-bias-right')
+      },
+      height: {
+        val: parent.pstyle('max-height').pfValue,
+        top: parent.pstyle('max-height-bias-top'),
+        bottom: parent.pstyle('max-height-bias-bottom')
+      }
+    };
+
     let bb = children.boundingBox( {
       includeLabels: includeLabels,
       includeOverlays: false,
@@ -166,11 +179,25 @@ elesfn.updateCompoundBounds = function(force = false){
 
     _p.autoPadding = computePaddingValues( bb.w, bb.h, parent.pstyle( 'padding' ), parent.pstyle( 'padding-relative-to' ).value );
 
-    _p.autoWidth = Math.max(bb.w, min.width.val);
-    pos.x = (- diffLeft + bb.x1 + bb.x2 + diffRight) / 2;
-
-    _p.autoHeight = Math.max(bb.h, min.height.val);
-    pos.y = (- diffTop + bb.y1 + bb.y2 + diffBottom) / 2;
+    if (Math.max(bb.w, min.width.val) >= max.width.val) {
+      _p.autoWidth = max.width.val;
+      pos.x = _p.position.x;
+    } else {
+      _p.autoWidth = Math.max(bb.w, min.width.val);
+      // pos.x = (- diffLeft + bb.x1 + bb.x2 + diffRight) / 2;
+    }
+    
+    
+    
+    if (Math.max(bb.h, min.height.val) >= max.height.val) {
+      _p.autoHeight = max.height.val;
+      pos.y = _p.position.y;
+    } else {
+      _p.autoHeight = Math.max(bb.h, min.height.val);
+      // pos.y = (- diffTop + bb.y1 + bb.y2 + diffBottom) / 2;
+    }
+    
+    
   }
 
   for( let i = 0; i < this.length; i++ ){
